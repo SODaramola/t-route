@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.0880556,
+          47.11305556
+        ]
+      },
+      "properties": {
+        "identifier": "USGS-01010500",
+        "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-01010500/navigation",
+        "name": "St. John River at Dickey, Maine",
+        "source": "nwissite",
+        "sourceName": "NWIS Surface Water Sites",
+        "comid": 4288603,
+        "type": "hydrolocation",
+        "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-01010500",
+        "reachcode": "01010008004638",
+        "measure": 89.39,
+        "mainstem": "https://geoconnex.us/ref/mainstems/2238467"
+      },
+      "id": "USGS-01010500"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.58527778,
+          47.2833333
+        ]
+      },
+      "properties": {
+        "identifier": "USGS-01014000",
+        "navigation": "https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-01014000/navigation",
+        "name": "St. John River below Fish R, nr Fort Kent, Maine",
+        "source": "nwissite",
+        "sourceName": "NWIS Surface Water Sites",
+        "comid": 4287975,
+        "type": "hydrolocation",
+        "uri": "https://waterdata.usgs.gov/monitoring-location/USGS-01014000",
+        "reachcode": "01010008004802",
+        "measure": 70.064,
+        "mainstem": "https://geoconnex.us/ref/mainstems/2238467"
+      },
+      "id": "USGS-01014000"
+    }
+  ]
+}

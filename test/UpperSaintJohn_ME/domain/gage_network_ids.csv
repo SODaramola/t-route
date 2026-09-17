@@ -1,0 +1,3 @@
+location,usgs_site,identifier,station_name,comid,reachcode,measure,longitude,latitude
+Dickey,01010500,USGS-01010500,"St. John River at Dickey, Maine",4288603,01010008004638,89.39,-69.0880556,47.11305556
+Fort Kent,01014000,USGS-01014000,"St. John River below Fish R, nr Fort Kent, Maine",4287975,01010008004802,70.064,-68.58527778,47.2833333
