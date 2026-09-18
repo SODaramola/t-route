@@ -79,3 +79,20 @@ bower_components/
 .grunt/
 src/vendor/
 dist/
+
+# ============================================================
+# Upper Saint John - large downloaded/generated model data
+# ============================================================
+
+# Original NWM parameter archive / CONUS hydrofabric
+test/UpperSaintJohn_ME/domain/NWM_parameter_files_v3.0.tar.gz
+test/UpperSaintJohn_ME/domain/RouteLink_CONUS_v3.0.nc
+
+# 4,344 generated hourly CHRTOUT forcing files
+test/UpperSaintJohn_ME/forcing/chrtout_20161101_20170501/
+
+# Temporary full-network t-route parquet output
+test/UpperSaintJohn_ME/output/flowveldepth_*.parquet
+
+# Runtime logs
+test/UpperSaintJohn_ME/output/*_run.log

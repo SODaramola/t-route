@@ -1,0 +1,9 @@
+location,series,peak_cms,peak_time,lag_from_USGS_peak_hours,basis
+Dickey,USGS,1563.0899318784,2017-04-28 23:00:00,0.0,four-way common exact-hour timestamps
+Dickey,t-route (MC),799.1922607421875,2017-04-13 17:00:00,-366.0,four-way common exact-hour timestamps
+Dickey,t-route (MC-DW),799.1922607421875,2017-04-13 17:00:00,-366.0,four-way common exact-hour timestamps
+Dickey,NWM v3,810.3299818877131,2017-04-13 17:00:00,-366.0,four-way common exact-hour timestamps
+Fort_Kent,USGS,2715.5855881728003,2017-04-29 11:00:00,0.0,four-way common exact-hour timestamps
+Fort_Kent,t-route (MC),1039.0889892578125,2017-04-14 15:00:00,-356.0,four-way common exact-hour timestamps
+Fort_Kent,t-route (MC-DW),1049.3946533203125,2017-04-14 03:00:00,-368.0,four-way common exact-hour timestamps
+Fort_Kent,NWM v3,1062.3999762535095,2017-04-14 14:00:00,-357.0,four-way common exact-hour timestamps

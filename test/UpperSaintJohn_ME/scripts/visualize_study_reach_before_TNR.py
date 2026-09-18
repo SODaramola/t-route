@@ -14,21 +14,6 @@ from pathlib import Path
 
 import geopandas as gpd
 import matplotlib.pyplot as plt
-from matplotlib import font_manager, rcParams
-
-# ============================================================
-# GLOBAL FIGURE STYLE
-# ============================================================
-
-font_manager._load_fontmanager(try_read_cache=False)
-
-rcParams["font.family"] = "Times New Roman"
-rcParams["font.size"] = 16
-rcParams["axes.titlesize"] = 20
-rcParams["axes.labelsize"] = 17
-rcParams["xtick.labelsize"] = 15
-rcParams["ytick.labelsize"] = 15
-
 
 
 # ============================================================
@@ -116,7 +101,7 @@ ax.annotate(
     xy=(dx, dy),
     xytext=(8, -35),
     textcoords="offset points",
-    fontsize=16,
+    fontsize=10,
 )
 
 ax.annotate(
@@ -124,7 +109,7 @@ ax.annotate(
     xy=(fx, fy),
     xytext=(8, 10),
     textcoords="offset points",
-    fontsize=16,
+    fontsize=10,
 )
 
 
@@ -135,13 +120,11 @@ ax.annotate(
 ax.set_title(
     "Upper Saint John River\n"
     "Dickey → Fort Kent Routing Study Area",
-    fontsize=20,
+    fontsize=15,
 )
 
-ax.set_xlabel("Longitude", fontsize=17)
-ax.set_ylabel("Latitude", fontsize=17)
-
-ax.tick_params(axis="both", labelsize=15)
+ax.set_xlabel("Longitude")
+ax.set_ylabel("Latitude")
 
 ax.grid(alpha=0.25)
 
@@ -152,16 +135,7 @@ plt.tight_layout()
 # 7. SAVE
 # ============================================================
 
-output_file = (
-    OUTPUT_DIR
-    / "troute_val"
-    / "01_UpperSaintJohn_study_reach.png"
-)
-
-output_file.parent.mkdir(
-    parents=True,
-    exist_ok=True,
-)
+output_file = OUTPUT_DIR / "UpperSaintJohn_study_reach.png"
 
 plt.savefig(
     output_file,
@@ -172,4 +146,4 @@ plt.savefig(
 print("\nSaved map:")
 print(output_file)
 
-# plt.show()
+plt.show()
