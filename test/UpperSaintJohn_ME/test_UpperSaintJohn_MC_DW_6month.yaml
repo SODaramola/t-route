@@ -1,0 +1,369 @@
+# ============================================================
+# UPPER SAINT JOHN RIVER
+# STANDARD MUSKINGUM-CUNGE BASELINE
+#
+# Experiment A:
+#     Standard Muskingum-Cunge routing
+#     No river-ice modification
+#     No streamflow data assimilation
+#     No reservoir data assimilation
+#
+# Simulation period:
+#     Start : 2016-11-01 00:00:00
+#     End   : 2016-11-03 00:00:00
+#
+# Routing timestep:
+#     dt = 300 s = 5 minutes
+#
+# Lateral forcing:
+#     NWM v3 retrospective q_lateral
+#     hourly forcing
+#
+# Total simulation duration:
+#     48 hours
+#
+# Total routing timesteps:
+#     48 hr * 12 timesteps/hr = 576
+#
+# Domain:
+#     4392 original RouteLink reaches
+#     4027 ordinary MC channel reaches
+#     35 level-pool waterbodies
+#
+# Warm start:
+#     NWM v3 reconstructed channel state
+#     NWM v3 LAKEOUT reservoir state
+#
+# ============================================================
+
+
+# ============================================================
+# 1. LOGGING
+# ============================================================
+
+log_parameters:
+
+    showtiming: True
+
+    log_level: DEBUG
+
+
+# ============================================================
+# 2. NETWORK TOPOLOGY
+# ============================================================
+
+network_topology_parameters:
+
+
+    # --------------------------------------------------------
+    # NHD / ROUTELINK NETWORK
+    # --------------------------------------------------------
+
+    supernetwork_parameters:
+
+        geo_file_path: domain/RouteLink_FortKent_full_upstream.nc
+
+        network_type: 'NHDNetwork'
+
+
+        columns:
+
+            key: 'link'
+
+            downstream: 'to'
+
+            dx: 'Length'
+
+            n: 'n'
+
+            ncc: 'nCC'
+
+            s0: 'So'
+
+            bw: 'BtmWdth'
+
+            waterbody: 'NHDWaterbodyComID'
+
+            gages: 'gages'
+
+            tw: 'TopWdth'
+
+            twcc: 'TopWdthCC'
+
+            musk: 'MusK'
+
+            musx: 'MusX'
+
+            cs: 'ChSlp'
+
+            alt: 'alt'
+
+
+    # --------------------------------------------------------
+    # WATERBODIES
+    #
+    # RouteLink reaches associated with NHD waterbodies are
+    # replaced by level-pool reservoir nodes.
+    #
+    # Number of unique waterbodies in this domain:
+    #     35
+    # --------------------------------------------------------
+
+    waterbody_parameters:
+
+        break_network_at_waterbodies: True
+
+
+        level_pool:
+
+            level_pool_waterbody_parameter_file_path: domain/LAKEPARM_FortKent_full_upstream.nc
+
+
+
+# ============================================================
+# 3. COMPUTATION
+# ============================================================
+
+compute_parameters:
+
+
+    # --------------------------------------------------------
+    # STANDARD MUSKINGUM-CUNGE ROUTING
+    #
+    # This is the unmodified t-route baseline.
+    # No river-ice terms have been introduced.
+    # --------------------------------------------------------
+
+    parallel_compute_method: by-subnetwork-jit-clustered
+
+    compute_kernel: V02-structured
+
+    assume_short_ts: True
+
+    subnetwork_target_size: 10000
+
+    cpu_pool: 4
+
+
+    # --------------------------------------------------------
+    # WARM RESTART
+    #
+    # Channel restart:
+    #
+    #     4027 ordinary MC reaches
+    #
+    #     qu0 = NWM v3 streamflow
+    #     qd0 = NWM v3 streamflow
+    #     h0  = reconstructed from NWM v3 velocity
+    #
+    #
+    # Waterbody restart:
+    #
+    #     35 level-pool reservoirs
+    #
+    #     qd0 = NWM v3 LAKEOUT outflow
+    #     h0  = NWM v3 LAKEOUT water_sfc_elev
+    #
+    #
+    # Restart time:
+    #
+    #     2016-11-01 00:00:00
+    #
+    # The simulation start time is read directly from the
+    # lite channel restart file.
+    # --------------------------------------------------------
+
+    restart_parameters:
+
+        start_datetime: 2016-11-01_00:00
+
+        lite_channel_restart_file: restart/channel_restart_201611010000
+
+        lite_waterbody_restart_file: restart/waterbody_restart_201611010000
+
+    # --------------------------------------------------------
+    # HYBRID / DIFFUSIVE ROUTING
+    #
+    # Disabled.
+    #
+    # Only standard Muskingum-Cunge + level-pool routing is
+    # being used for this baseline.
+    # --------------------------------------------------------
+
+    hybrid_parameters:
+
+        run_hybrid_routing: True
+
+        diffusive_domain: domain/UpperSaintJohn_Dickey_FortKent_diffusive_domain.yaml
+        use_natl_xsections: False
+
+        topobathy_domain:
+
+        run_refactored_network: False
+
+        refactored_domain:
+
+        refactored_topobathy_domain:
+
+        coastal_boundary_domain:
+
+
+    # --------------------------------------------------------
+    # LATERAL INFLOW FORCING
+    #
+    # NWM v3 retrospective q_lateral
+    #
+    # Files:
+    #
+    #     201611010100.CHRTOUT_DOMAIN1
+    #
+    # through
+    #
+    #     201611030000.CHRTOUT_DOMAIN1
+    #
+    #
+    # Forcing interval:
+    #
+    #     3600 s = 1 hour
+    #
+    #
+    # Routing interval:
+    #
+    #     300 s = 5 minutes
+    #
+    #
+    # Therefore:
+    #
+    #     qts_subdivisions = 3600 / 300
+    #                      = 12
+    #
+    #
+    # Simulation duration:
+    #
+    #     48 hours
+    #
+    #
+    # Number of routing timesteps:
+    #
+    #     nts = 48 * 12
+    #         = 576
+    #
+    # --------------------------------------------------------
+
+    forcing_parameters:
+
+        qts_subdivisions: 12
+
+        dt: 300
+
+        qlat_input_folder: forcing/chrtout_20161101_20170501
+
+        qlat_file_pattern_filter: "*.CHRTOUT_DOMAIN1"
+
+        nts: 52128
+
+        max_loop_size: 48
+
+
+    # --------------------------------------------------------
+    # DATA ASSIMILATION
+    #
+    # IMPORTANT:
+    #
+    # This version of NHDNetwork.py expects both:
+    #
+    #     reservoir_persistence_da
+    #
+    # and:
+    #
+    #     reservoir_rfc_da
+    #
+    # dictionaries to exist whenever reservoir_da exists.
+    #
+    # Therefore the dictionary structure is retained, but
+    # every form of data assimilation is explicitly disabled.
+    #
+    #
+    # Baseline experiment therefore has:
+    #
+    #     NO streamflow nudging
+    #     NO USGS reservoir persistence
+    #     NO USACE reservoir persistence
+    #     NO Great Lakes persistence
+    #     NO RFC reservoir forecasting
+    #
+    # --------------------------------------------------------
+
+    data_assimilation_parameters:
+
+
+        # ----------------------------------------------------
+        # STREAMFLOW DATA ASSIMILATION
+        # ----------------------------------------------------
+
+        streamflow_da:
+
+            streamflow_nudging: False
+
+            diffusive_streamflow_nudging: False
+
+
+        # ----------------------------------------------------
+        # RESERVOIR DATA ASSIMILATION
+        # ----------------------------------------------------
+
+        reservoir_da:
+
+
+            # ------------------------------------------------
+            # RESERVOIR PERSISTENCE DA
+            # ------------------------------------------------
+
+            reservoir_persistence_da:
+
+                reservoir_persistence_usgs: False
+
+                reservoir_persistence_usace: False
+
+                reservoir_persistence_greatLake: False
+
+
+            # ------------------------------------------------
+            # RFC RESERVOIR DA
+            # ------------------------------------------------
+
+            reservoir_rfc_da:
+
+                reservoir_rfc_forecasts: False
+
+
+
+# ============================================================
+# 4. OUTPUT
+# ============================================================
+
+# ============================================================
+# OUTPUT
+#
+# Only the two principal validation locations are retained:
+#
+#     Dickey    = 4288603
+#     Fort Kent = 4287759
+#
+# This avoids writing the entire 4392-reach domain at every
+# 5-minute timestep.
+# ============================================================
+
+output_parameters:
+
+    parquet_output:
+
+        parquet_output_folder: output/
+
+        parquet_output_segments:
+            - "4288603"
+            - "4287759"
+
+        configuration: short_range
+
+        prefix_ids: nex

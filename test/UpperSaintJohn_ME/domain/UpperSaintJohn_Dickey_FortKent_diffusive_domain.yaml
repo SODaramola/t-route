@@ -1,0 +1,23 @@
+# ============================================================
+# UPPER SAINT JOHN RIVER
+# DIFFUSIVE WAVE DOMAIN
+#
+# Tailwater:
+#     Fort Kent = NWM v3 feature 4287759
+#
+# Upstream MC/DW boundary:
+#     Dickey = NWM v3 feature 4288603
+#
+# t-route will trace the mainstem downstream from Dickey
+# to Fort Kent.
+#
+# rfc and rpu are retained because the current t-route
+# domain parser expects these keys, although they are
+# outdated metadata and are not used hydraulically.
+# ============================================================
+
+4287759:
+  headwater:
+    - 4288603
+  rfc: []
+  rpu: []
